@@ -4,10 +4,11 @@ project(libmotioncapture)
 # define some options
 option(LIBMOTIONCAPTURE_BUILD_PYTHON_BINDINGS "Generate Python Bindings" ON)
 option(LIBMOTIONCAPTURE_ENABLE_QUALISYS "Enable Qualisys" ON)
-option(LIBMOTIONCAPTURE_ENABLE_OPTITRACK "Enable Optitrack" ON)
+option(LIBMOTIONCAPTURE_ENABLE_OPTITRACK "Enable Optitrack" OFF)
 option(LIBMOTIONCAPTURE_ENABLE_OPTITRACK_CLOSED_SOURCE "Enable Optitrack (Closed Source)" OFF)
-option(LIBMOTIONCAPTURE_ENABLE_VICON "Enable Vicon" ON)
-option(LIBMOTIONCAPTURE_ENABLE_VRPN "Enable VRPN" ON)
+option(LIBMOTIONCAPTURE_ENABLE_VICON "Enable Vicon" OFF)
+option(LIBMOTIONCAPTURE_ENABLE_VRPN "Enable VRPN" OFF)
+option(LIBMOTIONCAPTURE_ENABLE_ARUCO "Enable ARUCO" ON)
 option(LIBMOTIONCAPTURE_BUILD_EXAMPLE "Enable Example application" ON)
 
 # Enable C++14
@@ -130,6 +131,16 @@ if (LIBMOTIONCAPTURE_ENABLE_VRPN)
   )
 endif()
 
+if (LIBMOTIONCAPTURE_ENABLE_ARUCO)
+  add_definitions(-DENABLE_ARUCO)
+  set(my_include_directories
+    ${my_include_directories}
+  )
+  set(my_files
+    ${my_files}
+    src/aruco.cpp
+  )
+endif()
 
 include_directories(
   ${my_include_directories}

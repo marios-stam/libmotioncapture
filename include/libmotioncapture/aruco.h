@@ -18,7 +18,7 @@ namespace libmotioncapture
         // implementations for MotionCapture interface
         virtual void waitForNextFrame();
         virtual const std::map<std::string, RigidBody> &rigidBodies() const;
-        virtual RigidBody rigidBodyByName(const std::string &name) const;
+        // virtual RigidBody rigidBodyByName(const std::string &name) const;
         virtual const PointCloud &pointCloud() const;
         virtual const std::vector<LatencyInfo> &latency() const;
         virtual uint64_t timeStamp() const;

@@ -76,7 +76,7 @@ namespace libmotioncapture
         do
         {
             // wait for new transform
-        } while (/*not new transform*/ true);
+        } while (/*not new transform*/ false);
 
         // Rigid body position and orientation
         // memcpy(&pImpl->rigidBodies[j].ID, ptr, 4);
@@ -96,12 +96,26 @@ namespace libmotioncapture
         // memcpy(&pImpl->rigidBodies[j].qw, ptr, 4);
         // ptr += 4;
 
+        // Testing code
+        if (pImpl->rigidBodies.size() == 0)
+        {
+            pImpl->rigidBodies.push_back({0, 1, 1, 1, 0, 0, 0, 1, 0.0, true});
+        }
+        else
+        {
+
+            pImpl->rigidBodies[0].x += 0.01;
+            pImpl->rigidBodies[0].y += 0.01;
+            pImpl->rigidBodies[0].z += 0.01;
+        }
+
         // Calculate latencies (ROS communication,Camera processsing,etc)
 
         // const uint64_t cameraLatencyTicks =
         //     cameraDataReceivedTimestamp - cameraMidExposureTimestamp;
-        // const double cameraLatencySeconds = cameraLatencyTicks / (double)pImpl->clockFrequency;
-        // latencies_.emplace_back(LatencyInfo("Camera", cameraLatencySeconds));
+        // const double cameraLatencySeconds = cameraLatencyTicks /
+        // (double)pImpl->clockFrequency; latencies_.emplace_back(LatencyInfo("Camera",
+        // cameraLatencySeconds));
 
         // const uint64_t swLatencyTicks = transmitTimestamp - cameraDataReceivedTimestamp;
         // const double swLatencySeconds = swLatencyTicks / (double)pImpl->clockFrequency;
@@ -149,5 +163,4 @@ namespace libmotioncapture
     uint64_t MotionCaptureAruco::timeStamp() const { return timestamp_; }
 
     MotionCaptureAruco::~MotionCaptureAruco() { delete pImpl; }
-
 }
