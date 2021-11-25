@@ -1,7 +1,7 @@
 #pragma once
 #include "libmotioncapture/motioncapture.h"
-#include <opencv2/aruco.hpp>
-#include <opencv2/opencv.hpp>
+#include <ros/ros.h>
+#include <tf/transform_listener.h>
 
 namespace libmotioncapture
 {
@@ -35,19 +35,10 @@ namespace libmotioncapture
 
     private:
         MotionCaptureArucoImpl *pImpl;
-
-        // OpenCV variables
-        cv::VideoCapture in_video;
-
-        cv::Mat image, image_copy;
-        cv::Mat camera_matrix, dist_coeffs;
-        std::ostringstream vector_to_marker;
-        cv::Ptr<cv::aruco::Dictionary> dictionary;
-
-        cv::FileStorage fs;
-        float marker_length_m;
-
-        std::map<int, int> ids_dict; // connects aruco id to Rigid_body id
+        std::vector<std::string> tf_ids;
+        ros::NodeHandle nh;
+        tf::TransformListener listener;
+        std::vector<std::string> ids;
     };
 
 } // namespace libobjecttracker

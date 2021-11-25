@@ -17,6 +17,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Boost 1.5 COMPONENTS system REQUIRED) # for optitrack
+find_package(OpenCV REQUIRED)
+
 add_definitions(
   -DBOOST_DATE_TIME_NO_LIB
   -DBOOST_REGEX_NO_LIB
@@ -41,6 +43,7 @@ set(my_include_directories
   include
   ${Boost_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 set(my_link_directories)
 set(my_files
@@ -131,16 +134,32 @@ if (LIBMOTIONCAPTURE_ENABLE_VRPN)
   )
 endif()
 
+# =================MARIOS========================
 if (LIBMOTIONCAPTURE_ENABLE_ARUCO)
   add_definitions(-DENABLE_ARUCO)
+
   set(my_include_directories
     ${my_include_directories}
+    ${OPENCV_INCLUDE_DIRS}
   )
   set(my_files
     ${my_files}
     src/aruco.cpp
   )
+  set(my_link_directories
+    ${my_link_directories}
+    ${OPENCV_LIBRARY_DIRS}
+  )  
+ 
+
+  set(my_libraries
+  ${my_libraries}
+  ${OpenCV_LIBRARIES}
+)
+
 endif()
+# =================MARIOS========================
+
 
 include_directories(
   ${my_include_directories}
