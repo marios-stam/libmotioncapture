@@ -1,6 +1,12 @@
 #include "libmotioncapture/aruco.h"
+#include <chrono>
 #include <filesystem>
 
+uint32_t getMillis()
+{
+    using namespace std::chrono;
+    return static_cast<uint32_t>(duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count());
+}
 namespace libmotioncapture
 {
     // constexpr int MAX_PACKETSIZE = 65503; // max size of packet (actual packet size is dynamic)
@@ -166,7 +172,6 @@ namespace libmotioncapture
         imshow("Pose estimation", image_copy);
 
         int wait_time = 10;
-
         char key = (char)cv::waitKey(wait_time);
         if (key == 27)
         {
@@ -179,11 +184,12 @@ namespace libmotioncapture
         {
             pImpl->rigidBodies.push_back({0, 0, 0, 0, 0, 0, 0, 0, 0, true});
         }
-        else
-        {
-        }
+        // Calculate latencies (ROS communication,Camera processsing,etc)
+        static uint32_t t = getMillis();
 
-        // Calculate latenc>ies (ROS communication,Camera processsing,etc)
+        uint32_t dt = getMillis() - t; // msec
+        std::cout << "latency: " << dt << " msec" << std::endl;
+        t = getMillis();
 
         // const uint64_t cameraLatencyTicks =
         //     cameraDataReceivedTimestamp - cameraMidExposureTimestamp;
